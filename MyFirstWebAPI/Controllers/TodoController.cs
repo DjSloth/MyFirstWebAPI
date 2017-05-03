@@ -3,30 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MyFirstWebAPI.Models;
 
 namespace MyFirstWebAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class TodoController : Controller
     {
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Todo> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new List<Todo>() { new Todo() { Id = 1, Caption = "Some todo title", Note = "do something" }, new Todo() { Id = 2, Caption = "Some todo title 2", Note = "do something" } };
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Todo Get(int id)
         {
-            return "value";
+            return new Todo() {Id = id, Caption = $"Some todo title {id}", Note = "do something"};
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]Todo value)
         {
+            return CreatedAtAction("Get", new {id = value.Id}, value);
         }
 
         // PUT api/values/5
